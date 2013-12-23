@@ -130,7 +130,8 @@ module Locomotive
     # @return [ Object ] The next or previous content entry or nil if none
     #
     def next_or_previous(matcher = :gt)
-      attribute, direction = self.content_type.order_by_definition(matcher == :lt)
+      default = self.content_type.order_direction.to_sym == :asc ? :lt : :gt
+      attribute, direction = self.content_type.order_by_definition(matcher == default)
 
       criterion = attribute.to_sym.send(matcher)
       value     = self.send(attribute.to_sym)
